@@ -67,8 +67,10 @@ a { color: var(--clr-primary); }
     position: absolute;
     right: 0;
     box-shadow: 0 0 3em rgba(0,0,0,.15);
-    transform: translateX(100%);
-    transition: transform 300ms cubic-bezier(.5, 0, .5, 1)
+    transform: translateX(100%); /*Percentage relative to the element itself
+                                    not the parent. 
+                                    So moved one element to the left*/
+    transition: transform 300ms cubic-bezier(.5, 0, .5, 1);
   }
   
   .nav__list {
@@ -98,8 +100,8 @@ a { color: var(--clr-primary); }
   .nav__toggle {
     position: absolute;
     top: 2em;
-    left: 0;
-    transform: translateX(-100%);
+    left: 0; /* Later hamburger icon will be place in the same place */
+    transform: translateX(-100%); /* The transform CSS property lets you rotate, scale, skew, or translate an element. It modifies the coordinate space of the CSS */
     background: var(--clr-light);
     padding: 1em .5em;
     border: 0;
@@ -111,23 +113,40 @@ a { color: var(--clr-primary); }
     position: relative;
   }
   
+  /* CSS, ::before creates a pseudo-element that is the first child of the selected element. It is often used to add cosmetic content to an element with the content property. It is inline by default. */
+
+  /* First the line is drawn on .hamburger.
+   Then a line is drawn before .hamburger.
+   Finally a line is drawn after .hamburger.
+  */
+
+  /* The lines are overlaying each other. You will only see one line */
+
   .hamburger,
   .hamburger::before,
   .hamburger::after {
     width: 2em;
-    height: 3px;
-    background: var(--clr-dark);
+    height: 3px; /* width and height draws the line */
+    background: var(--clr-dark); /* Color the lines background */
+
+        /* CSS transitions provide a way to control animation speed when changing CSS properties. Instead of having property changes take effect immediately, you can cause the changes in a property to take place over a period of time. For example, if you change the color of an element from white to black, usually the change is instantaneous. With CSS transitions enabled, changes occur at time intervals that follow an acceleration curve, all of which can be customized. */
     
     transition: transform 350ms ease-in-out, opacity 200ms linear;
+    /* So, the transition property states that transform on .hamburger happened
+     at a rate of 350ms in a ease in and out transition.
+     The opacity happened at 200ms in a straight linear fashion. */
+
   }
   
+  /* Somehow this cause the other two line to appear by separating them */
   .hamburger::before,
   .hamburger::after {
-    content: '';
+    content: ''; /* Possibly this add a space before the line and after .hamburger */
     position: absolute;
-    left: 0;
-  }
-  
+    left: 0; /* To make sure that the lines are lining up */
+  } 
+
+  /*This separate the lines by the position absolute property */
   .hamburger::before { bottom: 6px; }
   .hamburger::after { top: 6px;}
   
@@ -135,20 +154,21 @@ a { color: var(--clr-primary); }
   /* Navigation open styles */
   
   .nav-open .nav {
-    transform: translateX(0);
+    transform: translateX(0); /* Stay in the same position as default */
   }
   
   /* Change this stuff below */
   
   .nav-open .hamburger {
-    transform: rotate(45deg);
+    transform: rotate(45deg); /* Causes the line to turn at a 45deg angle */
   }
   
   .nav-open .hamburger::before {
-    opacity: 0;
+    opacity: 0; /* Causes the one line to disappear. The top line */
   }
   
   .nav-open .hamburger::after {
+      /* Causes the last line to rotate at a 90deg and move the line up */
     transform: rotate(90deg) translate(-6px);
   }
 
